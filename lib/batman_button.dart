@@ -21,7 +21,6 @@ class BatmanButton extends StatelessWidget {
         child: ClipRect(
           child: SizedBox(
             height: 55,
-            color: const Color(0xFFFDE86A),
             child: Stack(
               children: [
                 if (left)
