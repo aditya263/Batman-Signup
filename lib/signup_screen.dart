@@ -29,6 +29,7 @@ class _BatmanSignupState extends State<BatmanSignup>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animationLogoIn;
+  late Animation<double> _animationLogoMovementUp;
 
   @override
   void initState() {
@@ -45,6 +46,11 @@ class _BatmanSignupState extends State<BatmanSignup>
         parent: _animationController,
         curve: const Interval(0.0, 0.25),
       ),
+    );
+
+    _animationLogoMovementUp = CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(0.35, 0.50),
     );
 
     _animationController.forward();
@@ -95,13 +101,22 @@ class _BatmanSignupState extends State<BatmanSignup>
                     left: 0,
                     child: Column(
                       children: [
-                        const Text(
-                          'WELCOME TO',
-                          style: TextStyle(color: Colors.white, fontSize: 22),
-                        ),
-                        const Text(
-                          'GOTHAM CITY',
-                          style: TextStyle(color: Colors.white, fontSize: 35),
+                        Opacity(
+                          opacity: _animationLogoMovementUp.value,
+                          child: Column(
+                            children: const [
+                              Text(
+                                'WELCOME TO',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 22),
+                              ),
+                              Text(
+                                'GOTHAM CITY',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 35),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(
                           height: 35,
@@ -126,7 +141,8 @@ class _BatmanSignupState extends State<BatmanSignup>
                     ),
                   ),
                   Positioned(
-                    top: MediaQuery.of(context).size.height / 2.5,
+                    top: MediaQuery.of(context).size.height / 2.2 -
+                        65 * _animationLogoMovementUp.value,
                     right: 0,
                     left: 0,
                     child: Transform.scale(
