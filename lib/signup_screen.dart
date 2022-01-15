@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:batman_signup/batman_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,6 +28,8 @@ class _BatmanSignupState extends State<BatmanSignup>
   late AnimationController _animationController;
   late Animation<double> _animationLogoIn;
   late Animation<double> _animationLogoMovementUp;
+  late Animation<double> _animationBatmanIn;
+  late Animation<double> _animationButtonsIn;
 
   @override
   void initState() {
@@ -50,7 +50,29 @@ class _BatmanSignupState extends State<BatmanSignup>
 
     _animationLogoMovementUp = CurvedAnimation(
       parent: _animationController,
-      curve: const Interval(0.35, 0.50),
+      curve: const Interval(0.35, 0.60),
+    );
+
+    _animationBatmanIn = Tween(
+      begin: 5.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(
+          0.7,
+          1.0,
+          curve: Curves.decelerate,
+        ),
+      ),
+    );
+
+    _animationButtonsIn = CurvedAnimation(
+      parent: _animationController,
+      curve: const Interval(
+        0.7,
+        1.0,
+      ),
     );
 
     _animationController.forward();
@@ -90,9 +112,12 @@ class _BatmanSignupState extends State<BatmanSignup>
                     top: 0,
                     right: 0,
                     left: 0,
-                    child: Image.asset(
-                      'assets/batman_alone.png',
-                      fit: BoxFit.contain,
+                    child: Transform.scale(
+                      scale: _animationBatmanIn.value,
+                      child: Image.asset(
+                        'assets/batman_alone.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -123,18 +148,25 @@ class _BatmanSignupState extends State<BatmanSignup>
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                          child: Column(
-                            children: [
-                              BatmanButton(onTap: () {}, text: 'LOGIN'),
-                              const SizedBox(
-                                height: 20,
+                          child: Opacity(
+                            opacity: _animationButtonsIn.value,
+                            child: Transform.translate(
+                              offset: Offset(
+                                  0.0, 100 * (1 - _animationButtonsIn.value)),
+                              child: Column(
+                                children: [
+                                  BatmanButton(onTap: () {}, text: 'LOGIN'),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  BatmanButton(
+                                    onTap: () {},
+                                    text: 'SIGNUP',
+                                    left: false,
+                                  ),
+                                ],
                               ),
-                              BatmanButton(
-                                onTap: () {},
-                                text: 'SIGNUP',
-                                left: false,
-                              ),
-                            ],
+                            ),
                           ),
                         )
                       ],
