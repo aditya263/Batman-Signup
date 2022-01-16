@@ -116,6 +116,7 @@ class _BatmanSignupState extends State<BatmanSignup>
     return GestureDetector(
       onTap: () {
         _animationController.forward(from: 0.0);
+        _animationControllerSignup.reset();
       },
       child: AnimatedBuilder(
           animation: Listenable.merge(
@@ -152,9 +153,22 @@ class _BatmanSignupState extends State<BatmanSignup>
                     left: 0,
                     child: Column(
                       children: [
-                        BatmanScreenTitle(_animationLogoMovementUp),
+                        Transform.translate(
+                          offset: Offset(0.0, 60 * _animationLogoOut.value),
+                          child: Opacity(
+                            opacity: (1 - _animationLogoOut.value),
+                            child: BatmanScreenTitle(_animationLogoMovementUp),
+                          ),
+                        ),
                         const SizedBox(height: 35),
-                        BatmanScreenButtons(_animationButtonsIn, _onSignUp),
+                        Transform.translate(
+                          offset: Offset(0.0, 60 * _animationLogoOut.value),
+                          child: Opacity(
+                            opacity: (1 - _animationLogoOut.value),
+                            child: BatmanScreenButtons(
+                                _animationButtonsIn, _onSignUp),
+                          ),
+                        ),
                       ],
                     ),
                   ),
