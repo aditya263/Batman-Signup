@@ -1,4 +1,5 @@
-import 'package:batman_signup/batman_button.dart';
+import 'package:batman_signup/batman_screen_buttons.dart';
+import 'package:batman_signup/batman_screen_title.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -126,49 +127,11 @@ class _BatmanSignupState extends State<BatmanSignup>
                     left: 0,
                     child: Column(
                       children: [
-                        Opacity(
-                          opacity: _animationLogoMovementUp.value,
-                          child: Column(
-                            children: const [
-                              Text(
-                                'WELCOME TO',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 22),
-                              ),
-                              Text(
-                                'GOTHAM CITY',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 35),
-                              ),
-                            ],
-                          ),
-                        ),
+                        BatmanScreenTitle(_animationLogoMovementUp),
                         const SizedBox(
                           height: 35,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                          child: Opacity(
-                            opacity: _animationButtonsIn.value,
-                            child: Transform.translate(
-                              offset: Offset(
-                                  0.0, 100 * (1 - _animationButtonsIn.value)),
-                              child: Column(
-                                children: [
-                                  BatmanButton(onTap: () {}, text: 'LOGIN'),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  BatmanButton(
-                                    onTap: () {},
-                                    text: 'SIGNUP',
-                                    left: false,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                        BatmanScreenButtons(_animationButtonsIn),
                       ],
                     ),
                   ),
