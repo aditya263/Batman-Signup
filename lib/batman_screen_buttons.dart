@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'batman_button.dart';
 
 class BatmanScreenButtons extends AnimatedWidget {
-  BatmanScreenButtons(Animation animation, {Key? key})
-      : super(key: key, listenable: animation);
+  BatmanScreenButtons(Animation animation,this.onTap) : super(listenable: animation);
 
+  final VoidCallback onTap;
   Animation get _animationButtonsIn => listenable as Animation;
 
   @override
@@ -23,7 +23,7 @@ class BatmanScreenButtons extends AnimatedWidget {
                 height: 20,
               ),
               BatmanButton(
-                onTap: () {},
+                onTap: onTap,
                 text: 'SIGNUP',
                 left: false,
               ),

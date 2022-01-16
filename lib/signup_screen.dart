@@ -25,15 +25,17 @@ class BatmanSignup extends StatefulWidget {
 }
 
 class _BatmanSignupState extends State<BatmanSignup>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animationLogoIn;
   late Animation<double> _animationLogoMovementUp;
   late Animation<double> _animationBatmanIn;
   late Animation<double> _animationButtonsIn;
 
-  @override
-  void initState() {
+  late AnimationController _animationControllerSignup;
+  late Animation<double> _animationLogoOut;
+
+  void _setupFirstAnimations() {
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
@@ -77,13 +79,35 @@ class _BatmanSignupState extends State<BatmanSignup>
     );
 
     _animationController.forward();
+  }
 
+  void _setupSecondAnimations() {
+    _animationControllerSignup = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 6),
+    );
+
+    _animationLogoOut = CurvedAnimation(
+      parent: _animationControllerSignup,
+      curve: const Interval(0.0, 0.1),
+    );
+  }
+
+  void _onSignUp() {
+    _animationControllerSignup.forward(from: 0.0);
+  }
+
+  @override
+  void initState() {
+    _setupFirstAnimations();
+    _setupSecondAnimations();
     super.initState();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _animationControllerSignup.dispose();
     super.dispose();
   }
 
@@ -94,7 +118,8 @@ class _BatmanSignupState extends State<BatmanSignup>
         _animationController.forward(from: 0.0);
       },
       child: AnimatedBuilder(
-          animation: _animationController,
+          animation: Listenable.merge(
+              [_animationController, _animationControllerSignup]),
           builder: (context, _) {
             return Scaffold(
               backgroundColor: const Color(0xFF100F0B),
@@ -128,10 +153,8 @@ class _BatmanSignupState extends State<BatmanSignup>
                     child: Column(
                       children: [
                         BatmanScreenTitle(_animationLogoMovementUp),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        BatmanScreenButtons(_animationButtonsIn),
+                        const SizedBox(height: 35),
+                        BatmanScreenButtons(_animationButtonsIn, _onSignUp),
                       ],
                     ),
                   ),
@@ -140,12 +163,15 @@ class _BatmanSignupState extends State<BatmanSignup>
                         65 * _animationLogoMovementUp.value,
                     right: 0,
                     left: 0,
-                    child: Transform.scale(
-                      scale: _animationLogoIn.value,
-                      child: Image.asset(
-                        'assets/batman_logo.png',
-                        height: 50,
-                        fit: BoxFit.contain,
+                    child: Opacity(
+                      opacity: (1 - _animationLogoOut.value),
+                      child: Transform.scale(
+                        scale: _animationLogoIn.value,
+                        child: Image.asset(
+                          'assets/batman_logo.png',
+                          height: 50,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
