@@ -139,11 +139,14 @@ class _BatmanSignupState extends State<BatmanSignup>
                     top: 0,
                     right: 0,
                     left: 0,
-                    child: Transform.scale(
-                      scale: _animationBatmanIn.value,
-                      child: Image.asset(
-                        'assets/batman_alone.png',
-                        fit: BoxFit.contain,
+                    child: Transform.translate(
+                      offset: Offset(0.0, 60 * _animationLogoOut.value),
+                      child: Transform.scale(
+                        scale: _animationBatmanIn.value,
+                        child: Image.asset(
+                          'assets/batman_alone.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
