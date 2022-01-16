@@ -3,6 +3,8 @@ import 'package:batman_signup/batman_screen_title.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const _batmanVerticalMovement = 60.0;
+
 class MainBatmanSignupApp extends StatelessWidget {
   const MainBatmanSignupApp({Key? key}) : super(key: key);
 
@@ -34,6 +36,7 @@ class _BatmanSignupState extends State<BatmanSignup>
 
   late AnimationController _animationControllerSignup;
   late Animation<double> _animationLogoOut;
+  late Animation<double> _animationBatmanUp;
 
   void _setupFirstAnimations() {
     _animationController = AnimationController(
@@ -91,6 +94,11 @@ class _BatmanSignupState extends State<BatmanSignup>
       parent: _animationControllerSignup,
       curve: const Interval(0.0, 0.1),
     );
+
+    _animationBatmanUp = CurvedAnimation(
+      parent: _animationControllerSignup,
+      curve: const Interval(0.30, 0.45),
+    );
   }
 
   void _onSignUp() {
@@ -140,7 +148,11 @@ class _BatmanSignupState extends State<BatmanSignup>
                     right: 0,
                     left: 0,
                     child: Transform.translate(
-                      offset: Offset(0.0, 60 * _animationLogoOut.value),
+                      offset: Offset(
+                          0.0,
+                          _batmanVerticalMovement * _animationLogoOut.value +
+                             - _animationBatmanUp.value *
+                                  _batmanVerticalMovement),
                       child: Transform.scale(
                         scale: _animationBatmanIn.value,
                         child: Image.asset(
