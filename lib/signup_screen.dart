@@ -102,20 +102,17 @@ class _BatmanSignupState extends State<BatmanSignup>
 
     _animationBatmanUp = CurvedAnimation(
       parent: _animationControllerSignup,
-      curve: const Interval(0.35, 0.50),
+      curve: const Interval(0.35, 0.55),
     );
 
     _animationBatmanCity = CurvedAnimation(
       parent: _animationControllerSignup,
-      curve: const Interval(0.60, 0.75),
+      curve: const Interval(0.65, 0.8),
     );
 
     _animationSignupIn = CurvedAnimation(
       parent: _animationControllerSignup,
-      curve: const Interval(
-        0.7,
-        1.0,
-      ),
+      curve: const Interval(0.85, 1.0, curve: Curves.easeIn),
     );
   }
 
@@ -139,105 +136,102 @@ class _BatmanSignupState extends State<BatmanSignup>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        _animationController.forward(from: 0.0);
-        _animationControllerSignup.reset();
-      },
-      child: AnimatedBuilder(
-          animation: Listenable.merge(
-              [_animationController, _animationControllerSignup]),
-          builder: (context, _) {
-            return Scaffold(
-              backgroundColor: const Color(0xFF100F0B),
-              body: Stack(
-                children: [
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
+    return AnimatedBuilder(
+      animation:
+          Listenable.merge([_animationController, _animationControllerSignup]),
+      builder: (context, _) {
+        return Scaffold(
+          backgroundColor: const Color(0xFF100F0B),
+          body: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child: Image.asset(
+                  'assets/batman_background.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child: Transform.translate(
+                  offset: Offset(
+                      0.0,
+                      _batmanVerticalMovement * _animationLogoOut.value +
+                          -_animationBatmanUp.value * _batmanVerticalMovement),
+                  child: Transform.scale(
+                    scale: _animationBatmanIn.value,
                     child: Image.asset(
-                      'assets/batman_background.png',
+                      'assets/batman_alone.png',
                       fit: BoxFit.contain,
                     ),
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    child: Transform.translate(
-                      offset: Offset(
-                          0.0,
-                          _batmanVerticalMovement * _animationLogoOut.value +
-                              -_animationBatmanUp.value *
-                                  _batmanVerticalMovement),
-                      child: Transform.scale(
-                        scale: _animationBatmanIn.value,
-                        child: Image.asset(
-                          'assets/batman_alone.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height / 3.8,
-                    right: 40,
-                    left: 40,
-                    child: BatmanCity(_animationBatmanCity),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height / 3.8,
-                    right: 0,
-                    left: 0,
-                    child: BatmanScreenSignup(_animationSignupIn),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height / 2,
-                    right: 0,
-                    left: 0,
-                    child: Column(
-                      children: [
-                        Transform.translate(
-                          offset: Offset(0.0, _batmanVerticalMovement * _animationLogoOut.value),
-                          child: Opacity(
-                            opacity: (1 - _animationLogoOut.value),
-                            child: BatmanScreenTitle(_animationLogoMovementUp),
-                          ),
-                        ),
-                        const SizedBox(height: 35),
-                        Transform.translate(
-                          offset: Offset(0.0, _batmanVerticalMovement * _animationLogoOut.value),
-                          child: Opacity(
-                            opacity: (1 - _animationLogoOut.value),
-                            child: BatmanScreenButtons(
-                                _animationButtonsIn, _onSignUp),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height / 2.2 -
-                        65 * _animationLogoMovementUp.value,
-                    right: 0,
-                    left: 0,
-                    child: Opacity(
-                      opacity: (1 - _animationLogoOut.value),
-                      child: Transform.scale(
-                        scale: _animationLogoIn.value,
-                        child: Image.asset(
-                          'assets/batman_logo.png',
-                          height: 50,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            );
-          }),
+              Positioned(
+                top: MediaQuery.of(context).size.height / 3.8,
+                right: 40,
+                left: 40,
+                child: BatmanCity(_animationBatmanCity),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height / 1.8,
+                right: 0,
+                left: 0,
+                bottom: 0,
+                child: BatmanScreenSignup(_animationSignupIn),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height / 2,
+                right: 0,
+                left: 0,
+                child: Column(
+                  children: [
+                    Transform.translate(
+                      offset: Offset(0.0,
+                          _batmanVerticalMovement * _animationLogoOut.value),
+                      child: Opacity(
+                        opacity: (1 - _animationLogoOut.value),
+                        child: BatmanScreenTitle(_animationLogoMovementUp),
+                      ),
+                    ),
+                    const SizedBox(height: 35),
+                    Transform.translate(
+                      offset: Offset(0.0,
+                          _batmanVerticalMovement * _animationLogoOut.value),
+                      child: Opacity(
+                        opacity: (1 - _animationLogoOut.value),
+                        child:
+                            BatmanScreenButtons(_animationButtonsIn, _onSignUp),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height / 2.2 -
+                    65 * _animationLogoMovementUp.value,
+                right: 0,
+                left: 0,
+                child: Opacity(
+                  opacity: (1 - _animationLogoOut.value),
+                  child: Transform.scale(
+                    scale: _animationLogoIn.value,
+                    child: Image.asset(
+                      'assets/batman_logo.png',
+                      height: 50,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
