@@ -3,6 +3,8 @@ import 'package:batman_signup/batman_screen_title.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'batman_city.dart';
+
 const _batmanVerticalMovement = 60.0;
 
 class MainBatmanSignupApp extends StatelessWidget {
@@ -37,6 +39,7 @@ class _BatmanSignupState extends State<BatmanSignup>
   late AnimationController _animationControllerSignup;
   late Animation<double> _animationLogoOut;
   late Animation<double> _animationBatmanUp;
+  late Animation<double> _animationBatmanCity;
 
   void _setupFirstAnimations() {
     _animationController = AnimationController(
@@ -92,12 +95,17 @@ class _BatmanSignupState extends State<BatmanSignup>
 
     _animationLogoOut = CurvedAnimation(
       parent: _animationControllerSignup,
-      curve: const Interval(0.0, 0.1),
+      curve: const Interval(0.0, 0.20),
     );
 
     _animationBatmanUp = CurvedAnimation(
       parent: _animationControllerSignup,
-      curve: const Interval(0.30, 0.45),
+      curve: const Interval(0.35, 0.50),
+    );
+
+    _animationBatmanCity = CurvedAnimation(
+      parent: _animationControllerSignup,
+      curve: const Interval(0.60, 0.75),
     );
   }
 
@@ -151,7 +159,7 @@ class _BatmanSignupState extends State<BatmanSignup>
                       offset: Offset(
                           0.0,
                           _batmanVerticalMovement * _animationLogoOut.value +
-                             - _animationBatmanUp.value *
+                              -_animationBatmanUp.value *
                                   _batmanVerticalMovement),
                       child: Transform.scale(
                         scale: _animationBatmanIn.value,
@@ -161,6 +169,12 @@ class _BatmanSignupState extends State<BatmanSignup>
                         ),
                       ),
                     ),
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).size.height / 3.8,
+                    right: 40,
+                    left: 40,
+                    child: BatmanCity(_animationBatmanCity),
                   ),
                   Positioned(
                     top: MediaQuery.of(context).size.height / 2,
