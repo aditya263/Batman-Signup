@@ -1,4 +1,5 @@
 import 'package:batman_signup/batman_screen_buttons.dart';
+import 'package:batman_signup/batman_screen_signup.dart';
 import 'package:batman_signup/batman_screen_title.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,6 +41,7 @@ class _BatmanSignupState extends State<BatmanSignup>
   late Animation<double> _animationLogoOut;
   late Animation<double> _animationBatmanUp;
   late Animation<double> _animationBatmanCity;
+  late Animation<double> _animationSignupIn;
 
   void _setupFirstAnimations() {
     _animationController = AnimationController(
@@ -106,6 +108,14 @@ class _BatmanSignupState extends State<BatmanSignup>
     _animationBatmanCity = CurvedAnimation(
       parent: _animationControllerSignup,
       curve: const Interval(0.60, 0.75),
+    );
+
+    _animationSignupIn = CurvedAnimation(
+      parent: _animationControllerSignup,
+      curve: const Interval(
+        0.7,
+        1.0,
+      ),
     );
   }
 
@@ -177,13 +187,19 @@ class _BatmanSignupState extends State<BatmanSignup>
                     child: BatmanCity(_animationBatmanCity),
                   ),
                   Positioned(
+                    top: MediaQuery.of(context).size.height / 3.8,
+                    right: 0,
+                    left: 0,
+                    child: BatmanScreenSignup(_animationSignupIn),
+                  ),
+                  Positioned(
                     top: MediaQuery.of(context).size.height / 2,
                     right: 0,
                     left: 0,
                     child: Column(
                       children: [
                         Transform.translate(
-                          offset: Offset(0.0, 60 * _animationLogoOut.value),
+                          offset: Offset(0.0, _batmanVerticalMovement * _animationLogoOut.value),
                           child: Opacity(
                             opacity: (1 - _animationLogoOut.value),
                             child: BatmanScreenTitle(_animationLogoMovementUp),
@@ -191,7 +207,7 @@ class _BatmanSignupState extends State<BatmanSignup>
                         ),
                         const SizedBox(height: 35),
                         Transform.translate(
-                          offset: Offset(0.0, 60 * _animationLogoOut.value),
+                          offset: Offset(0.0, _batmanVerticalMovement * _animationLogoOut.value),
                           child: Opacity(
                             opacity: (1 - _animationLogoOut.value),
                             child: BatmanScreenButtons(
